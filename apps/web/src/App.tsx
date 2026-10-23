@@ -58,6 +58,7 @@ function Main() {
 }
 
 function Shell() {
+  const me = useMe();
   const qc = useQueryClient();
   const [route, go] = useRoute();
   const [creating, setCreating] = useState(false);
@@ -124,7 +125,7 @@ function Shell() {
             onPick={(id) => go({ kind: 'problem', id })}
             onNew={() => setCreating(true)}
           />
-          <LegalFooter admin />
+          <LegalFooter admin={!!me?.owner} />
         </div>
       )}
 

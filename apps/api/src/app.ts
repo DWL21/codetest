@@ -180,7 +180,7 @@ export function createApp(deps: AppDeps) {
   const sessionBody = (s: { expiresAt: number; userId: string } | null) => {
     const u = s ? users.byId(s.userId) : null;
     return u && s
-      ? { authenticated: true, expiresAt: new Date(s.expiresAt).toISOString(), user: { email: u.email, name: u.name, picture: u.picture, editor: u.editor } }
+      ? { authenticated: true, expiresAt: new Date(s.expiresAt).toISOString(), user: { email: u.email, name: u.name, picture: u.picture, editor: u.editor, owner: isOwner(u.email) } }
       : { authenticated: false, expiresAt: null, user: null };
   };
 

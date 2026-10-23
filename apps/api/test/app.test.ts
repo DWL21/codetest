@@ -277,8 +277,8 @@ describe('공용 문제·사용자별 풀이', () => {
     expect((await O('GET', '/api/problems/old')).body.data.code.java).toBe('내 풀이');
     expect((await O('GET', '/api/problems/old')).body.data.lastSubmission.score).toBe(100);
     expect((await O('GET', '/api/collections')).body.data.map((c: { name: string }) => c.name)).toEqual(['모의고사']);
-    expect((await O('GET', '/api/auth/session')).body.data.user.editor).toBe(true);
-    expect((await U('GET', '/api/auth/session')).body.data.user.editor).toBe(false);
+    expect((await O('GET', '/api/auth/session')).body.data.user).toMatchObject({ editor: true, owner: true });
+    expect((await U('GET', '/api/auth/session')).body.data.user).toMatchObject({ editor: false, owner: false });
   });
 
 });
