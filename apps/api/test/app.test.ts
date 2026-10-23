@@ -46,7 +46,7 @@ function setup(env: Record<string, string> = {}) {
         results: cases.map((c) => ({ status: c.expected === '"fail"' ? ('fail' as const) : ('pass' as const), actual: '1', stdout: '', stderr: '', timeMs: 1, memoryMb: 10 })),
       };
     },
-    runtime: async () => ({ runner: 'up' as const, versions: { java: '17', python: '3.8' } }),
+    runtime: async () => ({ runner: 'up' as const, versions: { java: '21.0.2', python: '3.13.13' } }),
     cancel: async (jobId: string) => {
       held.get(jobId)?.();
       return true;
@@ -326,6 +326,18 @@ describe('관리자 모드(마스터 비밀번호)', () => {
     const detail = (await A('GET', `/api/admin/users/${u.id}`)).body.data;
     expect(detail.termsVersion).toBeTruthy();
     expect(detail.recentSubmissions).toEqual([]);
+  });
+
+  it('사용자를 삭제하면 계정·풀이 기록·세션이 지워진다', async () => {
+    const s = setup({ ACCESS_PASSWORD: MASTER });
+    const cookie = await login(s, 'user@example.com');
+    const A = as(s, await masterLogin(s));
+    const id = ((await A('GET', '/api/admin/users')).body.data as { id: string }[])[0]!.id;
+    expect((await A('DELETE', `/api/admin/users/${id}`)).status).toBe(200);
+    expect((await A('GET', '/api/admin/users')).body.data).toEqual([]);
+    expect((await s.app.request('/api/collections', { method: 'POST', headers: { cookie } })).status).toBe(401);
+    expect((await A('DELETE', `/api/admin/users/${id}`)).status).toBe(404);
+    expect((await googleRoundTrip(s, 'user@example.com')).location).toBe('/signup');
   });
 
   it('사용자를 정지하면 블랙리스트에 올라 바로 막히고, 해제하면 다시 들어온다', async () => {

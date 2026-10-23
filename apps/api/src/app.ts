@@ -361,6 +361,13 @@ export function createApp(deps: AppDeps) {
     return ok(c, AdminUserDetail, users.detail(u.id)!);
   });
 
+  /** 사용자 삭제: 계정과 작성 코드·컬렉션·제출 기록·세션을 모두 지운다(공용 문제는 남는다) */
+  app.delete('/api/admin/users/:id', (c) => {
+    if (!users.delete(c.req.param('id'))) return fail(c, 404, 'not_found', '없는 사용자입니다.');
+    log.info(`[admin] 사용자 삭제 user=${c.req.param('id')}`);
+    return c.json({ data: { deleted: true } });
+  });
+
   app.get('/api/admin/blocklist', (c) => ok(c, z.array(BlockedEmail), blocklist.list()));
 
   app.post('/api/admin/blocklist', async (c) => {
