@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import type { AdminSession, AdminUser, AdminUserDetail } from '@codetest/shared';
+import type { AdminSession, AdminUser, AdminUserDetail } from '@solveline/shared';
 import { ApiError, adminApi, qk } from '../lib/api.ts';
 import { formatDuration } from '../lib/time.ts';
 import { Avatar } from './Avatar.tsx';
