@@ -142,20 +142,10 @@ function Shell() {
   );
 }
 
-/** 상단바 오른쪽: 로그인한 계정. 누르면 로그아웃·회원 탈퇴. */
+/** 상단바 오른쪽: 로그인한 계정. 누르면 로그아웃. */
 function UserMenu({ onLogout }: { onLogout: () => void }) {
-  const qc = useQueryClient();
   const me = useMe();
   const [open, setOpen] = useState(false);
-  const withdraw = useMutation({
-    mutationFn: api.deleteAccount,
-    onSuccess: () => {
-      const out: Session = { authenticated: false, expiresAt: null, user: null };
-      qc.setQueryData(qk.session, out);
-      qc.removeQueries({ predicate: (q) => q.queryKey[0] !== qk.session[0] });
-    },
-    onError: (e) => alert(e instanceof ApiError ? e.message : '탈퇴하지 못했어요'),
-  });
   useEffect(() => {
     if (!open) return;
     const close = (e: MouseEvent | KeyboardEvent) => {
@@ -189,14 +179,6 @@ function UserMenu({ onLogout }: { onLogout: () => void }) {
           </div>
           <button type="button" className="mt-1 w-full rounded-md px-2.5 py-2 text-left text-[13px] hover:bg-raised" onClick={onLogout}>
             로그아웃
-          </button>
-          <button
-            type="button"
-            className="w-full rounded-md px-2.5 py-2 text-left text-[12.5px] text-faint hover:bg-raised hover:text-bad"
-            disabled={withdraw.isPending}
-            onClick={() => confirm('탈퇴하면 작성한 코드·메모·제출 기록이 모두 지워지고 되돌릴 수 없어요. 탈퇴할까요?') && withdraw.mutate()}
-          >
-            회원 탈퇴
           </button>
         </div>
       )}

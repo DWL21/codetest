@@ -98,7 +98,7 @@ export function SignupScreen() {
                     </tr>
                     <tr>
                       <th>보유 기간</th>
-                      <td>회원 탈퇴 시까지</td>
+                      <td>탈퇴할 때까지</td>
                     </tr>
                   </tbody>
                 </table>

@@ -100,7 +100,6 @@ $ pnpm dev
 | `GET` `POST` | `/api/auth/signup` | 가입 대기 중인 Google 계정 / 약관 동의 후 가입 |
 | `GET` | `/api/auth/session` | 세션 상태와 로그인한 계정(편집 권한 포함) |
 | `POST` | `/api/auth/logout` | 로그아웃 |
-| `DELETE` | `/api/account` | 회원 탈퇴(내 풀이 기록 모두 삭제) |
 | `GET` | `/api/public/config` | 공개 설정(문의 이메일, 약관 버전) |
 | `POST` | `/api/admin/login` | 관리자 모드(마스터 비밀번호) |
 | `GET` | `/api/admin/users`, `/api/admin/users/{id}` | 사용자 목록 / 상세 현황 |

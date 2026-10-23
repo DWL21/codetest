@@ -281,17 +281,6 @@ describe('공용 문제·사용자별 풀이', () => {
     expect((await U('GET', '/api/auth/session')).body.data.user.editor).toBe(false);
   });
 
-  it('탈퇴하면 계정과 내 데이터가 지워지고 세션도 끝난다(공용 문제는 남는다)', async () => {
-    const s = setup();
-    const cookie = await login(s);
-    const E = as(s, cookie);
-    await E('POST', '/api/problems', problem);
-    expect((await E('DELETE', '/api/account')).status).toBe(200);
-    expect((await s.app.request('/api/collections', { method: 'POST', headers: { cookie } })).status).toBe(401);
-    expect((s.db.prepare('SELECT COUNT(*) AS n FROM problems').get() as { n: number }).n).toBe(1);
-    expect((s.db.prepare('SELECT COUNT(*) AS n FROM user_problems').get() as { n: number }).n).toBe(0);
-    expect((await googleRoundTrip(s, OWNER)).location).toBe('/signup');
-  });
 });
 
 describe('관리자 모드(마스터 비밀번호)', () => {

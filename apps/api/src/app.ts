@@ -424,14 +424,6 @@ export function createApp(deps: AppDeps) {
     return next();
   };
 
-  /** 회원 탈퇴: 계정과 작성 코드·컬렉션·제출 기록을 모두 지운다 */
-  app.delete('/api/account', async (c) => {
-    users.delete(c.get('userId'));
-    deleteCookie(c, SESSION_COOKIE, sessionCookie);
-    log.info(`[auth] 탈퇴 user=${c.get('userId')}`);
-    return c.json({ data: { deleted: true } });
-  });
-
   // 실행 환경: runner 중 하나라도 살아 있으면 up
   app.get('/api/runtime', async (c) => {
     const all = await Promise.all(runners.map((r) => r.runtime()));

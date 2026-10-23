@@ -75,7 +75,6 @@ export const api = {
   signupPending: () => request(SignupPending, '/api/auth/signup'),
   signup: () => request(Session, '/api/auth/signup', json('POST', { agreeAge: true, agreeTerms: true, agreePrivacy: true })),
   signupCancel: () => request(z.object({ cancelled: z.boolean() }), '/api/auth/signup/cancel', json('POST')),
-  deleteAccount: () => request(z.object({ deleted: z.boolean() }), '/api/account', { method: 'DELETE' }),
   runtime: () => request(Runtime, '/api/runtime'),
   problems: () => request(z.array(ProblemSummary), '/api/problems'),
   problem: (id: string) => request(Problem, `/api/problems/${encodeURIComponent(id)}`),
